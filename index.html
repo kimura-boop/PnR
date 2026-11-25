@@ -113,6 +113,9 @@ details[open] .chev{transform:rotate(-135deg);margin:4px 4px 0 0}
 .time{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--ink)}
 .frame{position:relative;aspect-ratio:16/9;max-width:100%;background:#000}
 .frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vfile{margin:0;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--surface)}
+.vfile video{display:block;width:100%;max-width:100%;aspect-ratio:16/9;background:#000}
+.vfile figcaption{display:flex;justify-content:space-between;gap:12px;align-items:baseline;padding:8px 12px;font-size:12px;color:var(--muted)}
 .vfoot{display:flex;justify-content:flex-end;padding:6px 10px;font-size:12px}
 .vfoot a{color:var(--muted)}
 .pending{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px dashed var(--line);border-radius:6px;font-size:13px;color:var(--muted)}
@@ -287,7 +290,7 @@ const PRINCIPLES = {
     ['まずリジェクトを狙う','常にスクリーンを使わない側へのドライブを最初に狙う。DFがリジェクトを警戒するから、スクリーンがかかりやすくなる。'],
     ['ショートロールで全体を見る','激しい守りには深くダイブせず、フリースローライン付近で受けて、バックターンかフロントターンでコート全体を見て4対3を作る。'],
     ['1 Pass AwayのDFを剥がす','ヘルプやウォールを狙う隣のDFに対して、事前のスクリーンやVカットでスペースを作る。']],
-  basics:[{y:'McVY9cxthgE',t:0,label:'悪いスクリーン、良いスクリーン',by:'MBTR',chk:true}]
+  basics:[{f:'videos/screen-basics.mp4',poster:'videos/screen-basics.jpg',label:'良いスクリーン、悪いスクリーン',dur:'1:25'}]
 };
 
 /* ===== 表示 ===== */
@@ -301,6 +304,7 @@ const GROUPS = [['pnr','P&Rの守り方','スクリーナーとボールマン�
 
 function videoHTML(v){
   if (v.pending) return `<div class="pending"><i>準備中</i>${esc(v.pending)}</div>`;
+  if (v.f) return `<figure class="vfile"><video controls playsinline preload="metadata" ${v.poster ? `poster="${esc(v.poster)}"` : ''} src="${esc(v.f)}"></video><figcaption><span class="vtitle">${esc(v.label)}</span>${v.dur ? `<span class="time">${esc(v.dur)}</span>` : ''}</figcaption></figure>`;
   const badges = (v.by ? `<span class="tag src">${esc(v.by)}</span>` : '') + (v.kind ? `<span class="tag src">${esc(v.kind)}</span>` : '') + (v.chk ? '<span class="tag warn">要確認</span>' : '');
   if (v.u) return `<div class="vid"><a class="vbtn link" href="${esc(v.u)}" target="_blank" rel="noopener"><span class="play" aria-hidden="true"></span><span class="vmeta"><span class="vtitle">${esc(v.label)}</span><span class="vsub">${badges}<span>別タブで開く</span></span></span></a></div>`;
   const time = `<span class="time">${v.t ? fmt(v.t) + '〜' : '最初から'}</span>`;
