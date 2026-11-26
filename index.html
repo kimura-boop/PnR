@@ -358,7 +358,7 @@ const GROUPS = [['pnr','P&Rの守り方','スクリーナーとボールマン�
 
 function videoHTML(v){
   if (v.pending) return `<div class="pending"><i>準備中</i>${esc(v.pending)}</div>`;
-  if (v.f) return `<figure class="vfile"><video controls playsinline preload="metadata" ${v.poster ? `poster="${esc(v.poster)}"` : ''} src="${esc(v.f)}"></video><figcaption><span class="vtitle">${esc(v.label)}</span>${v.dur ? `<span class="time">${esc(v.dur)}</span>` : ''}</figcaption></figure>`;
+  if (v.f) return `<figure class="vfile"><video controls playsinline muted preload="metadata" ${v.poster ? `poster="${esc(v.poster)}"` : ''} src="${esc(v.f)}"></video><figcaption><span class="vtitle">${esc(v.label)}</span>${v.dur ? `<span class="time">${esc(v.dur)}</span>` : ''}</figcaption></figure>`;
   const badges = (v.by ? `<span class="tag src">${esc(v.by)}</span>` : '') + (v.kind ? `<span class="tag src">${esc(v.kind)}</span>` : '') + (v.chk ? '<span class="tag warn">要確認</span>' : '');
   if (v.u) return `<div class="vid"><a class="vbtn link" href="${esc(v.u)}" target="_blank" rel="noopener"><span class="play" aria-hidden="true"></span><span class="vmeta"><span class="vtitle">${esc(v.label)}</span><span class="vsub">${badges}<span>別タブで開く</span></span></span></a></div>`;
   const time = `<span class="time">${v.t ? fmt(v.t) + '〜' : '最初から'}</span>`;
