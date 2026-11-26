@@ -459,7 +459,7 @@ function skillPage(s){
     <p class="sub" style="font-size:14px;margin-top:12px">${esc(s.lead)}</p>
     <ul class="counters">${s.items.map(([jp, en, desc, v], i) => `
       <li><details class="counter"><summary><span class="num">パス<b>${i + 1}</b></span>
-        <span class="cname">${esc(jp)}<span class="jp-sm">${esc(en)}</span></span><span class="chev" aria-hidden="true"></span></summary>
+        <span class="cname">${esc(en)}<span class="jp-sm">${esc(jp)}</span></span><span class="chev" aria-hidden="true"></span></summary>
         <div class="cbody"><p>${esc(desc)}</p>${vidsHTML([v])}</div></details></li>`).join('')}</ul>`;
 }
 
