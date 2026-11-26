@@ -113,6 +113,14 @@ details[open] .chev{transform:rotate(-135deg);margin:4px 4px 0 0}
 .time{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--ink)}
 .frame{position:relative;aspect-ratio:16/9;max-width:100%;background:#000}
 .frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:16px 0 0}
+.roles div{border:1px solid var(--line);border-radius:6px;padding:10px 12px;background:var(--surface);min-width:0}
+.roles dt{font-weight:700;font-size:14px}
+.roles dd{margin:2px 0 0;font-size:13px;color:var(--muted);line-height:1.6}
+.read{display:grid;gap:6px}
+.read p{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:baseline}
+.rl{font-size:11px;font-weight:700;letter-spacing:.06em;padding:1px 7px;border-radius:3px;background:var(--prevent-soft);color:var(--prevent);white-space:nowrap}
+.rl.go{background:var(--punish-soft);color:var(--punish)}
 .vfile{margin:0;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--surface)}
 .vfile video{display:block;width:100%;max-width:100%;aspect-ratio:16/9;background:#000}
 .vfile figcaption{display:flex;justify-content:space-between;gap:12px;align-items:baseline;padding:8px 12px;font-size:12px;color:var(--muted)}
@@ -293,6 +301,19 @@ const PRINCIPLES = {
   basics:[{f:'videos/screen-basics.mp4',poster:'videos/screen-basics.jpg',label:'良いスクリーン、悪いスクリーン',dur:'1:25'}]
 };
 
+/* セットプレー：相手の反応（see）→ 攻め方（go） */
+const ACTIONS = [
+ {id:'spain', call:'SPAIN P&R', jp:'スペイン・ピック＆ロール', en:'Spain Pick & Roll',
+  how:'通常のP&Rに3人目の「スタックスクリーナー」を加えたセット。スクリーナーがロールする瞬間、スタックスクリーナーがロールマンのDFにバックスクリーンをかけ、そのままポップする。',
+  roles:[['ハンドラー','ボールを持ってP&Rを使う'],['ロールマン','ボールスクリーンをかけてゴールへロールする'],['スタックスクリーナー','ロールマンのDFにバックスクリーンをかけ、外へポップする']],
+  overview:{f:'videos/spain-overview.mp4',poster:'videos/spain-overview.jpg',label:'Spain P&R 解説',dur:'0:26'},
+  reads:[
+   ['Handler Attack','スタックスクリーナーのDFがロールマンを守りに行った','ハンドラーが空く。ドライブかプルアップで自分で攻める。',{f:'videos/spain-handler.mp4',poster:'videos/spain-handler.jpg',label:'Spain P&R Handler Attack',dur:'0:37'}],
+   ['Roller Open','スタックスクリーナーのDFがハンドラーを守りに行った','ロールマンが空く。ゴールへ向かうロールマンにパスする。',{f:'videos/spain-roller.mp4',poster:'videos/spain-roller.jpg',label:'Spain P&R Roller Open',dur:'0:37'}],
+   ['Stack Pop Open','スタックスクリーナーのDFがハンドラーを守りに行き、ロールマンも止められた','スタックスクリーナーが空く。ポップした3Pシューターにパスする。',{f:'videos/spain-stackpop.mp4',poster:'videos/spain-stackpop.jpg',label:'Spain P&R Stack Pop Open',dur:'0:27'}],
+   ['Skip Pass','コーナーのDFがロールマンにタグ（ヘルプ）に来た','コーナーが空く。逆サイドのコーナーへスキップパスを飛ばす。',{f:'videos/spain-skip.mp4',poster:'videos/spain-skip.jpg',label:'Spain P&R Skip Pass',dur:'0:32'}]]}
+];
+
 /* ===== 表示 ===== */
 // 動画をページ内に埋め込めるのはGitHub Pagesなど通常のサイトだけ。プレビュー環境ではYouTubeを別タブで開く。
 const EMBED = location.protocol === 'file:' || /github\.io$|localhost$/.test(location.hostname) || document.documentElement.dataset.embed === 'on';
@@ -320,7 +341,12 @@ function home(){
     <ul class="dflist">${DF.filter(d => d.group === key).map(d => `
       <li><a href="#${d.id}"><span class="call">${esc(d.call)}<span class="jp">${esc(d.jp)}</span></span>
       <span class="count">${d.punish.length + d.prevent.length} カウンター</span>
-      <span class="sum">${esc(d.how)}</span></a></li>`).join('')}</ul></section>`).join('');
+      <span class="sum">${esc(d.how)}</span></a></li>`).join('')}</ul></section>`).join('')
+    + `<section class="group"><h2>セットプレー<span style="font-weight:400"> ・ 相手の反応を読んで攻める形</span></h2>
+    <ul class="dflist">${ACTIONS.map(a => `
+      <li><a href="#${a.id}"><span class="call">${esc(a.call)}<span class="jp">${esc(a.jp)}</span></span>
+      <span class="count">${a.reads.length} つの読み</span>
+      <span class="sum">${esc(a.how.split('。')[0])}。</span></a></li>`).join('')}</ul></section>`;
   $app.innerHTML = `<div class="intro"><h1>相手DF別カウンター</h1>
     <p>相手のP&Rディフェンスを見分けて、どのカウンターで攻めるかを確認するページです。守り方を選ぶと、カウンターと動画が出てきます。</p>
     <div class="legend"><span><span class="tag punish">PUNISH</span>完成した守りを崩す</span><span><span class="tag prevent">PREVENT</span>守りの形を作らせない</span></div></div>${g}`;
@@ -347,6 +373,20 @@ function dfPage(d){
       <ul class="counters">${counterList(d.prevent, 'prevent', d.punish.length + 1)}</ul></section>`;
 }
 
+function actionPage(a){
+  $app.innerHTML = `<a class="back" href="#">← 一覧に戻る</a>
+    <div class="dfhead"><span class="eyebrow">セットプレー</span>
+      <h1 class="call">${esc(a.call)}</h1><span class="names">${esc(a.jp)}（${esc(a.en)}）</span></div>
+    <div class="facts"><div class="fact"><h3>どんな形か</h3><p>${esc(a.how)}</p></div></div>
+    <dl class="roles">${a.roles.map(([r, d]) => `<div><dt>${esc(r)}</dt><dd>${esc(d)}</dd></div>`).join('')}</dl>
+    <section class="block"><h2>① 形を確認する</h2><div style="margin-top:10px">${vidsHTML([a.overview])}</div></section>
+    <section class="block"><h2>② 読み：どこが空くか</h2><p class="sub">スタックスクリーナーのDFとコーナーのDFの動きを見て、空いた選手を使います。</p>
+      <ul class="counters">${a.reads.map(([name, see, go, v], i) => `
+        <li><details class="counter"><summary><span class="num">読み<b>${i + 1}</b></span>
+          <span class="cname">${esc(name)}</span><span class="chev" aria-hidden="true"></span></summary>
+          <div class="cbody"><div class="read"><p><span class="rl">相手</span>${esc(see)}</p><p><span class="rl go">攻め</span>${esc(go)}</p></div>${vidsHTML([v])}</div></details></li>`).join('')}</ul></section>`;
+}
+
 function principles(){
   const P = PRINCIPLES;
   $app.innerHTML = `<div class="intro"><h1>P&Rの原則</h1><p>どの守り方が相手でも共通する考え方です。</p></div>
@@ -363,11 +403,12 @@ function principles(){
 function route(){
   const id = location.hash.replace('#', '');
   const d = DF.find(x => x.id === id);
-  if (d) dfPage(d); else if (id === 'principles') principles(); else home();
+  const act = ACTIONS.find(x => x.id === id);
+  if (d) dfPage(d); else if (act) actionPage(act); else if (id === 'principles') principles(); else home();
   document.querySelectorAll('[data-nav]').forEach(a => {
     if ((id === 'principles') === (a.dataset.nav === 'principles')) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
   });
-  document.title = d ? `${d.call} | P&R Counter` : 'P&R Counter';
+  document.title = d ? `${d.call} | P&R Counter` : act ? `${act.call} | P&R Counter` : 'P&R Counter';
   window.scrollTo(0, 0);
 }
 
