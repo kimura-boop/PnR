@@ -117,6 +117,7 @@ details[open] .chev{transform:rotate(-135deg);margin:4px 4px 0 0}
 .roles div{border:1px solid var(--line);border-radius:6px;padding:10px 12px;background:var(--surface);min-width:0}
 .roles dt{font-weight:700;font-size:14px}
 .roles dd{margin:2px 0 0;font-size:13px;color:var(--muted);line-height:1.6}
+.jp-sm{display:block;font-size:12px;font-weight:400;color:var(--muted)}
 .read{display:grid;gap:6px}
 .read p{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:baseline}
 .rl{font-size:11px;font-weight:700;letter-spacing:.06em;padding:1px 7px;border-radius:3px;background:var(--prevent-soft);color:var(--prevent);white-space:nowrap}
@@ -311,7 +312,12 @@ const ACTIONS = [
    ['Handler Attack','スタックスクリーナーのDFがロールマンを守りに行った','ハンドラーが空く。ドライブかプルアップで自分で攻める。',{f:'videos/spain-handler.mp4',poster:'videos/spain-handler.jpg',label:'Spain P&R Handler Attack',dur:'0:37'}],
    ['Roller Open','スタックスクリーナーのDFがハンドラーを守りに行った','ロールマンが空く。ゴールへ向かうロールマンにパスする。',{f:'videos/spain-roller.mp4',poster:'videos/spain-roller.jpg',label:'Spain P&R Roller Open',dur:'0:37'}],
    ['Stack Pop Open','スタックスクリーナーのDFがハンドラーを守りに行き、ロールマンも止められた','スタックスクリーナーが空く。ポップした3Pシューターにパスする。',{f:'videos/spain-stackpop.mp4',poster:'videos/spain-stackpop.jpg',label:'Spain P&R Stack Pop Open',dur:'0:27'}],
-   ['Skip Pass','コーナーのDFがロールマンにタグ（ヘルプ）に来た','コーナーが空く。逆サイドのコーナーへスキップパスを飛ばす。',{f:'videos/spain-skip.mp4',poster:'videos/spain-skip.jpg',label:'Spain P&R Skip Pass',dur:'0:32'}]]}
+   ['Skip Pass','コーナーのDFがロールマンにタグ（ヘルプ）に来た','コーナーが空く。逆サイドのコーナーへスキップパスを飛ばす。',{f:'videos/spain-skip.mp4',poster:'videos/spain-skip.jpg',label:'Spain P&R Skip Pass',dur:'0:32'}]],
+  dfs:[
+   ['Spain Switch','スペイン・スイッチ','スタックスクリーナーのDFがハンドラーにスイッチし、ハンドラーのDFがポップするスタックスクリーナーにスイッチする。',{f:'videos/spain-df-spainswitch.mp4',poster:'videos/spain-df-spainswitch.jpg',label:'Spain P&R DF Spain Switch',dur:'0:30'}],
+   ['Switch Up','スイッチアップ','ボールスクリーナーのDFが前に出てハンドラーにスイッチする。3人とも入れ替わるトリプルスイッチや、その後スタックスクリーナーのDFがハンドラーにスイッチする形もある。',{f:'videos/spain-df-switchup.mp4',poster:'videos/spain-df-switchup.jpg',label:'Spain P&R DF Switch Up',dur:'0:45'}],
+   ['Blitz','ブリッツ','ハンドラーに2人でダブルチームを仕掛ける。スタックスクリーナーのDFも加わる形がある。',{f:'videos/spain-df-blitz.mp4',poster:'videos/spain-df-blitz.jpg',label:'Spain P&R DF Blitz',dur:'0:48'}],
+   ['Hedge & X-out Switch','ヘッジ＆Xアウトスイッチ','ボールスクリーナーのDFがヘッジして戻り、スタックスクリーナーのDFはコーナーへ、コーナーのDFはポップしたスタックスクリーナーへと、斜めに入れ替わって守る。',{f:'videos/spain-df-hedge.mp4',poster:'videos/spain-df-hedge.jpg',label:'Spain P&R DF Hedge & X-out Switch',dur:'0:42'}]]}
 ];
 
 /* ===== 表示 ===== */
@@ -384,7 +390,12 @@ function actionPage(a){
       <ul class="counters">${a.reads.map(([name, see, go, v], i) => `
         <li><details class="counter"><summary><span class="num">読み<b>${i + 1}</b></span>
           <span class="cname">${esc(name)}</span><span class="chev" aria-hidden="true"></span></summary>
-          <div class="cbody"><div class="read"><p><span class="rl">相手</span>${esc(see)}</p><p><span class="rl go">攻め</span>${esc(go)}</p></div>${vidsHTML([v])}</div></details></li>`).join('')}</ul></section>`;
+          <div class="cbody"><div class="read"><p><span class="rl">相手</span>${esc(see)}</p><p><span class="rl go">攻め</span>${esc(go)}</p></div>${vidsHTML([v])}</div></details></li>`).join('')}</ul></section>
+    ${a.dfs ? `<section class="block"><h2>③ 相手のSpain対策DF</h2><p class="sub">Spain P&Rに対して、相手がよく使う守り方です。</p>
+      <ul class="counters">${a.dfs.map(([name, jp, desc, v], i) => `
+        <li><details class="counter"><summary><span class="num">DF<b>${i + 1}</b></span>
+          <span class="cname">${esc(name)}<span class="jp-sm">${esc(jp)}</span></span><span class="chev" aria-hidden="true"></span></summary>
+          <div class="cbody"><p>${esc(desc)}</p>${vidsHTML([v])}</div></details></li>`).join('')}</ul></section>` : ''}`;
 }
 
 function principles(){
