@@ -96,7 +96,7 @@ details.counter>summary::-webkit-details-marker{display:none}
 .cname{font-weight:700;font-size:16px;line-height:1.45}
 .cname .tag{margin-left:6px;vertical-align:2px}
 .chev{width:10px;height:10px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);margin:0 4px 4px 0;transition:transform .15s}
-details[open] .chev{transform:rotate(-135deg);margin:4px 4px 0 0}
+details[open]>summary .chev{transform:rotate(-135deg);margin:4px 4px 0 0}
 .cbody{padding:0 14px 14px;display:grid;gap:10px}
 .cbody p{margin:0}
 
@@ -117,6 +117,24 @@ details[open] .chev{transform:rotate(-135deg);margin:4px 4px 0 0}
 .roles div{border:1px solid var(--line);border-radius:6px;padding:10px 12px;background:var(--surface);min-width:0}
 .roles dt{font-weight:700;font-size:14px}
 .roles dd{margin:2px 0 0;font-size:13px;color:var(--muted);line-height:1.6}
+.feature{display:grid;gap:6px;margin-top:20px;padding:20px;border-radius:10px;background:var(--ink);color:var(--bg);text-decoration:none}
+.feature .eyebrow{color:var(--bg);opacity:.7}
+.feature .call{font-size:36px}
+.fjp{font-weight:700;font-size:14px;opacity:.85}
+.fsum{font-size:14px;line-height:1.7;opacity:.9}
+.fmeta{display:flex;flex-wrap:wrap;gap:6px 16px;font-family:var(--mono);font-size:12px;opacity:.8;margin-top:4px}
+.fgo{margin-top:8px;font-weight:700;font-size:14px}
+.feature:hover .fgo{text-decoration:underline}
+.soon{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 2px;border-bottom:1px solid var(--line);color:var(--muted);cursor:default}
+.soon .call{font-size:20px;opacity:.55}
+.subc{border-top:1px solid var(--line);padding-top:12px;display:grid;gap:8px}
+.subc h4{margin:0 0 2px;font-size:13px;color:var(--punish);letter-spacing:.04em}
+.subc details{border:1px solid var(--line);border-radius:6px;background:var(--bg)}
+.subc summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 12px;font-weight:700}
+.subc summary::-webkit-details-marker{display:none}
+.sn{font-family:var(--mono);font-size:12px;width:22px;height:22px;border-radius:50%;background:var(--punish-soft);color:var(--punish);display:grid;place-items:center}
+.subbody{padding:0 12px 12px;display:grid;gap:8px}
+.subbody p{margin:0;font-size:14px}
 .jp-sm{display:block;font-size:12px;font-weight:400;color:var(--muted)}
 .read{display:grid;gap:6px}
 .read p{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:baseline}
@@ -157,7 +175,7 @@ details[open] .chev{transform:rotate(-135deg);margin:4px 4px 0 0}
   <header class="top">
     <a class="brand" href="#">P&amp;R COUNTER</a>
     <nav aria-label="メニュー">
-      <a href="#" data-nav="home">守り方</a>
+      <a href="#" data-nav="home">トップ</a>
       <a href="#principles" data-nav="principles">原則</a>
     </nav>
   </header>
@@ -314,7 +332,11 @@ const ACTIONS = [
    ['Stack Pop Open','スタックスクリーナーのDFがハンドラーを守りに行き、ロールマンも止められた','スタックスクリーナーが空く。ポップした3Pシューターにパスする。',{f:'videos/spain-stackpop.mp4',poster:'videos/spain-stackpop.jpg',label:'Spain P&R Stack Pop Open',dur:'0:27'}],
    ['Skip Pass','コーナーのDFがロールマンにタグ（ヘルプ）に来た','コーナーが空く。逆サイドのコーナーへスキップパスを飛ばす。',{f:'videos/spain-skip.mp4',poster:'videos/spain-skip.jpg',label:'Spain P&R Skip Pass',dur:'0:32'}]],
   dfs:[
-   ['Spain Switch','スペイン・スイッチ','スタックスクリーナーのDFがハンドラーにスイッチし、ハンドラーのDFがポップするスタックスクリーナーにスイッチする。',{f:'videos/spain-df-spainswitch.mp4',poster:'videos/spain-df-spainswitch.jpg',label:'Spain P&R DF Spain Switch',dur:'0:30'}],
+   ['Spain Switch','スペイン・スイッチ','スタックスクリーナーのDFがハンドラーにスイッチし、ハンドラーのDFがポップするスタックスクリーナーにスイッチする。',{f:'videos/spain-df-spainswitch.mp4',poster:'videos/spain-df-spainswitch.jpg',label:'Spain P&R DF Spain Switch',dur:'0:30'},[
+     ['Slip Pop','スタックスクリーナーがバックスクリーンをかけ切らずに、早めに外へ抜けてポップする（リークアウト）。スイッチの受け渡しが間に合わず、ポップしたスタックスクリーナーか、ロールマンが空く。',{f:'videos/spain-ss-slippop.mp4',poster:'videos/spain-ss-slippop.jpg',label:'Spain Switch DF vs Slip Pop',dur:'0:54'}],
+     ['Drive the Slip','スリップポップの動きが起きた瞬間に、ハンドラーがドライブする。ハンドラーのDFがスタックスクリーナーを追うと、ハンドラーを守る選手がいなくなる。プルアップも狙える。',{f:'videos/spain-ss-driveslip.mp4',poster:'videos/spain-ss-driveslip.jpg',label:'Spain Switch DF vs Drive the Slip',dur:'0:24'}],
+     ['Dunker / Slip','スタックスクリーナーがダンカースポット（ゴール横のベースライン付近）へ移動する、またはゴールへスリップする。',{f:'videos/spain-ss-dunker.mp4',poster:'videos/spain-ss-dunker.jpg',label:'Spain Switch DF vs Dunker / Slip',dur:'0:32'}],
+     ['P&P Relocate','ボールスクリーナーがピック＆ポップし、同時にコーナーの選手が位置を移して、片側に人数を集める（オーバーロード）。',{f:'videos/spain-ss-pprelocate.mp4',poster:'videos/spain-ss-pprelocate.jpg',label:'Spain Switch DF vs P&P Relocate',dur:'0:25'}]]],
    ['Switch Up','スイッチアップ','ボールスクリーナーのDFが前に出てハンドラーにスイッチする。3人とも入れ替わるトリプルスイッチや、その後スタックスクリーナーのDFがハンドラーにスイッチする形もある。',{f:'videos/spain-df-switchup.mp4',poster:'videos/spain-df-switchup.jpg',label:'Spain P&R DF Switch Up',dur:'0:45'}],
    ['Blitz','ブリッツ','ハンドラーに2人でダブルチームを仕掛ける。スタックスクリーナーのDFも加わる形がある。',{f:'videos/spain-df-blitz.mp4',poster:'videos/spain-df-blitz.jpg',label:'Spain P&R DF Blitz',dur:'0:48'}],
    ['Hedge & X-out Switch','ヘッジ＆Xアウトスイッチ','ボールスクリーナーのDFがヘッジして戻り、スタックスクリーナーのDFはコーナーへ、コーナーのDFはポップしたスタックスクリーナーへと、斜めに入れ替わって守る。',{f:'videos/spain-df-hedge.mp4',poster:'videos/spain-df-hedge.jpg',label:'Spain P&R DF Hedge & X-out Switch',dur:'0:42'}]]}
@@ -341,21 +363,25 @@ function videoHTML(v){
 }
 const vidsHTML = list => list.length ? `<div class="vids">${list.map(videoHTML).join('')}</div>` : `<div class="pending"><i>準備中</i>動画を準備しています</div>`;
 
+// 公開中の守り方ページ。準備ができたらidを足す（例：'drop'）
+const OPEN_DF = [];
 function home(){
+  const feat = ACTIONS.map(a => `
+    <a class="feature" href="#${a.id}"><span class="eyebrow">セットプレー</span>
+      <span class="call">${esc(a.call)}</span><span class="fjp">${esc(a.jp)}</span>
+      <span class="fsum">${esc(a.how.split('。')[0])}。</span>
+      <span class="fmeta"><span>読み ${a.reads.length}</span><span>相手DF ${a.dfs ? a.dfs.length : 0}</span><span>動画 ${1 + a.reads.length + (a.dfs ? a.dfs.reduce((n, x) => n + 1 + (x[4] ? x[4].length : 0), 0) : 0)}</span></span>
+      <span class="fgo">ページを開く →</span></a>`).join('');
   const g = GROUPS.map(([key, title, sub]) => `
     <section class="group"><h2>${title}<span style="font-weight:400"> ・ ${sub}</span></h2>
-    <ul class="dflist">${DF.filter(d => d.group === key).map(d => `
+    <ul class="dflist">${DF.filter(d => d.group === key).map(d => OPEN_DF.includes(d.id) ? `
       <li><a href="#${d.id}"><span class="call">${esc(d.call)}<span class="jp">${esc(d.jp)}</span></span>
       <span class="count">${d.punish.length + d.prevent.length} カウンター</span>
-      <span class="sum">${esc(d.how)}</span></a></li>`).join('')}</ul></section>`).join('')
-    + `<section class="group"><h2>セットプレー<span style="font-weight:400"> ・ 相手の反応を読んで攻める形</span></h2>
-    <ul class="dflist">${ACTIONS.map(a => `
-      <li><a href="#${a.id}"><span class="call">${esc(a.call)}<span class="jp">${esc(a.jp)}</span></span>
-      <span class="count">${a.reads.length} つの読み</span>
-      <span class="sum">${esc(a.how.split('。')[0])}。</span></a></li>`).join('')}</ul></section>`;
-  $app.innerHTML = `<div class="intro"><h1>相手DF別カウンター</h1>
-    <p>相手のP&Rディフェンスを見分けて、どのカウンターで攻めるかを確認するページです。守り方を選ぶと、カウンターと動画が出てきます。</p>
-    <div class="legend"><span><span class="tag punish">PUNISH</span>完成した守りを崩す</span><span><span class="tag prevent">PREVENT</span>守りの形を作らせない</span></div></div>${g}`;
+      <span class="sum">${esc(d.how)}</span></a></li>` : `
+      <li><div class="soon" aria-disabled="true"><span class="call">${esc(d.call)}<span class="jp">${esc(d.jp)}</span></span><span class="count"><span class="tag src">準備中</span></span></div></li>`).join('')}</ul></section>`).join('');
+  $app.innerHTML = `<div class="intro"><h1>相手の守りを読んで攻める</h1>
+    <p>P&Rで相手がどう守ってきたかを見て、どこが空くかを動画で確認するページです。</p></div>
+    ${feat}${g}`;
 }
 
 function counterList(items, kind, start){
@@ -392,10 +418,13 @@ function actionPage(a){
           <span class="cname">${esc(name)}</span><span class="chev" aria-hidden="true"></span></summary>
           <div class="cbody"><div class="read"><p><span class="rl">相手</span>${esc(see)}</p><p><span class="rl go">攻め</span>${esc(go)}</p></div>${vidsHTML([v])}</div></details></li>`).join('')}</ul></section>
     ${a.dfs ? `<section class="block"><h2>③ 相手のSpain対策DF</h2><p class="sub">Spain P&Rに対して、相手がよく使う守り方です。</p>
-      <ul class="counters">${a.dfs.map(([name, jp, desc, v], i) => `
+      <ul class="counters">${a.dfs.map(([name, jp, desc, v, cs], i) => `
         <li><details class="counter"><summary><span class="num">DF<b>${i + 1}</b></span>
-          <span class="cname">${esc(name)}<span class="jp-sm">${esc(jp)}</span></span><span class="chev" aria-hidden="true"></span></summary>
-          <div class="cbody"><p>${esc(desc)}</p>${vidsHTML([v])}</div></details></li>`).join('')}</ul></section>` : ''}`;
+          <span class="cname">${esc(name)}<span class="jp-sm">${esc(jp)}${cs ? `<span class="tag punish" style="margin-left:8px">カウンター${cs.length}</span>` : ''}</span></span><span class="chev" aria-hidden="true"></span></summary>
+          <div class="cbody"><p>${esc(desc)}</p>${vidsHTML([v])}
+          ${cs ? `<div class="subc"><h4>${esc(name)}へのカウンター</h4>${cs.map(([cn, cd, cv], j) => `
+            <details><summary><span class="sn">${j + 1}</span><span>${esc(cn)}</span><span class="chev" aria-hidden="true"></span></summary>
+            <div class="subbody"><p>${esc(cd)}</p>${vidsHTML([cv])}</div></details>`).join('')}</div>` : ''}</div></details></li>`).join('')}</ul></section>` : ''}`;
 }
 
 function principles(){
@@ -415,7 +444,7 @@ function route(){
   const id = location.hash.replace('#', '');
   const d = DF.find(x => x.id === id);
   const act = ACTIONS.find(x => x.id === id);
-  if (d) dfPage(d); else if (act) actionPage(act); else if (id === 'principles') principles(); else home();
+  if (d && OPEN_DF.includes(d.id)) dfPage(d); else if (act) actionPage(act); else if (id === 'principles') principles(); else home();
   document.querySelectorAll('[data-nav]').forEach(a => {
     if ((id === 'principles') === (a.dataset.nav === 'principles')) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
   });
