@@ -125,6 +125,9 @@ details[open]>summary .chev{transform:rotate(-135deg);margin:4px 4px 0 0}
 .fmeta{display:flex;flex-wrap:wrap;gap:6px 16px;font-family:var(--mono);font-size:12px;opacity:.8;margin-top:4px}
 .fgo{margin-top:8px;font-weight:700;font-size:14px}
 .feature:hover .fgo{text-decoration:underline}
+.feature.alt{background:var(--surface);color:var(--ink);border:1px solid var(--line);margin-top:12px}
+.feature.alt .eyebrow{color:var(--muted);opacity:1}
+.feature.alt .call{font-size:28px}
 .soon{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 2px;border-bottom:1px solid var(--line);color:var(--muted);cursor:default}
 .soon .call{font-size:20px;opacity:.55}
 .subc{border-top:1px solid var(--line);padding-top:12px;display:grid;gap:8px}
@@ -350,6 +353,16 @@ const ACTIONS = [
      ['Skip Pass','スタックスクリーナーのDFがロールマンにタグ（ヘルプ）に来る間に、コーナーが空く。コーナーへスキップパスを飛ばし、受けた選手がそのまま攻める。',{f:'videos/spain-hx-skip.mp4',poster:'videos/spain-hx-skip.jpg',label:'Hedge & X-out Switch DF vs Skip Pass',dur:'0:12'}]]]]}
 ];
 
+/* スキル：P&Rで使うパス */
+const SKILLS = {id:'passes', call:'PASSING', jp:'P&Rで使うパス', lead:'P&Rでは、空いた選手に「どのパスで届けるか」まで決まって初めて得点につながります。6種類のパスを動画で確認しましょう。',
+ items:[
+  ['ポケットパス','Pocket Pass','ディフェンダーの腕や体のすぐ横にある「ポケット」と呼ばれる狭い隙間を通すパス。主にピック＆ロールで、ボールハンドラーがDFを引きつけた状態から、ゴールへダイブ（ロール）するインサイドの選手へバウンドパスやチェストパスで素早く送り込む。',{f:'videos/skill-pocket-pass.mp4',poster:'videos/skill-pocket-pass.jpg',label:'Pocket Pass',dur:'0:51'}],
+  ['ラップパス','Wrap Pass','DFの体の周りを「包み込む（Wrap）」ように腕を回して出すパス。DFが距離を詰めてプレッシャーをかけてきた時に、一歩踏み出して相手の腰の横や背中側を通す。ポストへのパスや、ドライブからの合わせでよく使う。',{f:'videos/skill-wrap-pass.mp4',poster:'videos/skill-wrap-pass.jpg',label:'Wrap Pass',dur:'0:44'}],
+  ['フックパス','Hook Pass','フックシュートと同じように、片手で頭の上から弧を描くように投げるパス。DFに正面や側面を塞がれた時、自分の体を壁にして遠い方の手で頭越しに出す。背の高いDFの頭上を越えて逆サイドへ展開する時に有効。',{f:'videos/skill-hook-pass.mp4',poster:'videos/skill-hook-pass.jpg',label:'Hook Pass',dur:'0:38'}],
+  ['ウィップパス','Whip Pass','手首と腕のしなりを使い、ムチ（Whip）を打つように素早く鋭く飛ばすワンハンドパス。ドリブルから最小限のモーションで一瞬で出すため、パスを読まれにくい。速攻や狭いスペースへの鋭いパスで使う。',{f:'videos/skill-whip-pass.mp4',poster:'videos/skill-whip-pass.jpg',label:'Whip Pass',dur:'0:41'}],
+  ['ロブパス','Lob Pass','DFの頭上を越える山なりの高い軌道で、フワリと浮かせるパス。ゴール下で有利なポジションを取ったビッグマンへ届ける時や、空中でキャッチしてそのまま決める「アリウープ」で使う。',{f:'videos/skill-lob-pass.mp4',poster:'videos/skill-lob-pass.jpg',label:'Lob Pass',dur:'0:33'}],
+  ['キックアウト','Kick out','ゴールへドライブした選手が、3ポイントライン付近で待つ味方へ戻すパス。ドライブでDFをゴール付近に集めることで外にノーマークのシューターを作り、確率の高い3Pにつなげる。',{f:'videos/skill-kickout.mp4',poster:'videos/skill-kickout.jpg',label:'Kick out',dur:'0:47'}]]};
+
 /* ===== 表示 ===== */
 // 動画をページ内に埋め込めるのはGitHub Pagesなど通常のサイトだけ。プレビュー環境ではYouTubeを別タブで開く。
 const EMBED = location.protocol === 'file:' || /github\.io$|localhost$/.test(location.hostname) || document.documentElement.dataset.embed === 'on';
@@ -379,7 +392,11 @@ function home(){
       <span class="call">${esc(a.call)}</span><span class="fjp">${esc(a.jp)}</span>
       <span class="fsum">${esc(a.how.split('。')[0])}。</span>
       <span class="fmeta"><span>読み ${a.reads.length}</span><span>相手DF ${a.dfs ? a.dfs.length : 0}</span><span>動画 ${1 + a.reads.length + (a.dfs ? a.dfs.reduce((n, x) => n + 1 + (x[4] ? x[4].length : 0), 0) : 0)}</span></span>
-      <span class="fgo">ページを開く →</span></a>`).join('');
+      <span class="fgo">ページを開く →</span></a>`).join('')
+    + `<a class="feature alt" href="#${SKILLS.id}"><span class="eyebrow">スキル</span>
+      <span class="call">${esc(SKILLS.call)}</span><span class="fjp">${esc(SKILLS.jp)}</span>
+      <span class="fmeta"><span>${SKILLS.items.map(x => esc(x[1])).join(' / ')}</span></span>
+      <span class="fgo">ページを開く →</span></a>`;
   const g = GROUPS.map(([key, title, sub]) => `
     <section class="group"><h2>${title}<span style="font-weight:400"> ・ ${sub}</span></h2>
     <ul class="dflist">${DF.filter(d => d.group === key).map(d => OPEN_DF.includes(d.id) ? `
@@ -435,6 +452,17 @@ function actionPage(a){
             <div class="subbody"><p>${esc(cd)}</p>${vidsHTML([cv])}</div></details>`).join('')}</div>` : ''}</div></details></li>`).join('')}</ul></section>` : ''}`;
 }
 
+function skillPage(s){
+  $app.innerHTML = `<a class="back" href="#">← 一覧に戻る</a>
+    <div class="dfhead"><span class="eyebrow">スキル</span>
+      <h1 class="call">${esc(s.call)}</h1><span class="names">${esc(s.jp)}</span></div>
+    <p class="sub" style="font-size:14px;margin-top:12px">${esc(s.lead)}</p>
+    <ul class="counters">${s.items.map(([jp, en, desc, v], i) => `
+      <li><details class="counter"><summary><span class="num">パス<b>${i + 1}</b></span>
+        <span class="cname">${esc(jp)}<span class="jp-sm">${esc(en)}</span></span><span class="chev" aria-hidden="true"></span></summary>
+        <div class="cbody"><p>${esc(desc)}</p>${vidsHTML([v])}</div></details></li>`).join('')}</ul>`;
+}
+
 function principles(){
   const P = PRINCIPLES;
   $app.innerHTML = `<div class="intro"><h1>P&Rの原則</h1><p>どの守り方が相手でも共通する考え方です。</p></div>
@@ -452,7 +480,7 @@ function route(){
   const id = location.hash.replace('#', '');
   const d = DF.find(x => x.id === id);
   const act = ACTIONS.find(x => x.id === id);
-  if (d && OPEN_DF.includes(d.id)) dfPage(d); else if (act) actionPage(act); else if (id === 'principles') principles(); else home();
+  if (d && OPEN_DF.includes(d.id)) dfPage(d); else if (act) actionPage(act); else if (id === SKILLS.id) skillPage(SKILLS); else if (id === 'principles') principles(); else home();
   document.querySelectorAll('[data-nav]').forEach(a => {
     if ((id === 'principles') === (a.dataset.nav === 'principles')) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
   });
